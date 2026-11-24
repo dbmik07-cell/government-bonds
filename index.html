@@ -11,7 +11,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: eight full-viewport plates on one track; a HUD above carries the live bond ticker, a rail below groups the plates by speaker. */
+/* Layout: nine full-viewport plates on one track (a cover, then two per part); a HUD above carries the bond ticker during the case study, a rail below groups the plates by part. */
 :root{
   --paper:#eef1f2; --panel:#f8fafa; --panel-2:#e2e8ea; --ink:#101a22; --ink-2:#3d4a55; --ink-3:#62707b; --rule:#c5ced4;
   --blue:#2a78d6; --orange:#d95926; --green:#178f66; --violet:#6250d6;
@@ -63,6 +63,7 @@ ul,ol{padding:0;list-style:none}
 .tk-name::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--blue)}
 .tk i{font-style:normal;color:var(--ink-3);font-size:.6rem;text-transform:uppercase;letter-spacing:.09em}
 .tk b{font-weight:600;font-size:.82rem}
+body:not([data-sec="3"]) .ticker{visibility:hidden}               /* the bond only appears in the case study */
 
 /* ---------- deck ---------- */
 .deck{position:relative;flex:1;min-height:0;background:radial-gradient(70rem 44rem at -6% 110%,var(--acc-soft),transparent 68%),radial-gradient(48rem 30rem at 106% -10%,var(--acc-soft),transparent 70%)}
@@ -145,15 +146,17 @@ input[type=range]{width:100%;accent-color:var(--blue);height:1.5rem;margin:0;cur
 .hit{fill:transparent;cursor:crosshair}
 
 /* ---------- 1 cover ---------- */
-.agenda{display:grid;gap:0;border-top:1px solid var(--rule);margin-top:.4rem}
-.agenda button{width:100%;display:grid;grid-template-columns:4.2rem var(--agw,6.4rem) minmax(0,1fr);gap:.6rem;align-items:baseline;text-align:left;
-  padding:.55rem .2rem;border-bottom:1px solid var(--rule)}
-.agenda button:hover{background:var(--gs)}
+.agenda{display:grid;gap:.7rem;width:min(100%,46rem);margin:0 auto}
+.agenda button{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.1rem 1.1rem;align-items:center;text-align:left;
+  padding:.95rem 1.15rem;background:var(--panel);border:1px solid var(--rule);border-left:7px solid var(--g);border-radius:6px;
+  box-shadow:0 1.2rem 2rem -1.6rem var(--g);transition:background .2s,border-color .2s,transform .2s}
+.agenda button:hover{background:var(--gs);border-color:var(--g);transform:translateX(.25rem)}
 .agenda li:nth-child(1){--g:var(--blue-deep);--gs:var(--blue-soft)}.agenda li:nth-child(2){--g:var(--orange-deep);--gs:var(--orange-soft)}.agenda li:nth-child(3){--g:var(--violet-deep);--gs:var(--violet-soft)}.agenda li:nth-child(4){--g:var(--green-deep);--gs:var(--green-soft)}
-.ag-n{justify-self:start;font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--on-deep);background:var(--g);padding:.14rem .45rem;border-radius:3px}
-.ag-w{font-family:var(--mono);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;overflow-wrap:anywhere}
-.ag-t{font-weight:600}
-.cert-wrap{perspective:1400px;width:min(100%,44rem);margin:0 auto}
+.ag-w{grid-row:1/3;font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;color:var(--on-deep);background:var(--g);padding:.3rem .6rem;border-radius:3px}
+.ag-t{grid-column:2;font-family:var(--display);font-weight:700;font-size:1.5rem;line-height:1.1;font-optical-sizing:none;font-variation-settings:"opsz" 26}
+.ag-d{grid-column:2;color:var(--ink-2);font-size:.95rem}
+.ag-n{grid-row:1/3;grid-column:3;font-family:var(--mono);font-size:.7rem;color:var(--ink-3);white-space:nowrap}
+.cert-wrap{perspective:1400px;width:min(100%,27rem)}
 .flip-in{position:relative;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .is-flipped>.flip-in{transform:rotateY(180deg)}
 .face{position:relative;backface-visibility:hidden;-webkit-backface-visibility:hidden}
@@ -174,26 +177,47 @@ input[type=range]{width:100%;accent-color:var(--blue);height:1.5rem;margin:0;cur
 .terms{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.28rem 1.2rem;font-size:.86rem}
 .terms dt{color:var(--ink-3);font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;align-self:center}
 .terms dd{font-weight:600}
-.timebar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.8rem;align-items:center;width:min(100%,44rem);margin:0 auto;font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}
-.timebar b{color:var(--ink)}
 
-/* ---------- 2 promise ---------- */
-.coupons{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.4rem}
-.cpn{position:relative;border:1px dashed var(--ink-3);border-radius:3px;padding:.4rem .2rem;text-align:center;font-family:var(--mono);background:var(--paper);min-width:0}
-.cpn i{display:block;font-style:normal;font-size:.6rem;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase;white-space:nowrap}
-.cpn b{display:block;font-size:.78rem;font-weight:600;white-space:nowrap}
-.cpn.paid{border-style:solid;border-color:var(--blue);background:var(--blue-soft)}
-.cpn.paid::after{content:"paid";position:absolute;top:-.45rem;right:-.2rem;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;background:var(--blue);color:var(--panel);padding:.05rem .3rem;border-radius:2px;font-weight:600}
-.stub{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;border:1px solid var(--blue-deep);border-radius:4px;padding:.7rem 1rem;background:var(--blue-deep);color:var(--on-deep);transition:background .3s,border-color .3s}
-.stub span{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--on-deep)}
-.stub b{font-family:var(--sans);font-size:2rem;font-weight:600;line-height:1}
-.stub s{font-family:var(--sans);font-size:1.2rem;color:var(--on-deep);opacity:.75;margin-right:.5rem;text-decoration-thickness:2px}
-.sheet-sum{font-size:.95rem;color:var(--ink-2)}
-.sheet-sum b{color:var(--ink)}
-.haircut .cpn{border-color:var(--orange)}
-.haircut .stub{background:var(--orange-deep);border-color:var(--orange-deep)}
-.haircut .cpn.paid{background:var(--orange-soft)}
-.haircut .cpn.paid::after{background:var(--orange)}
+/* ---------- 2 meanings of "safe" · 3 risks ---------- */
+.means{display:flex;flex-direction:column;gap:.65rem}
+.means li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.2rem 1rem;align-items:center;padding:.9rem 1.05rem;border:1px solid var(--rule);border-left:7px solid var(--orange);border-radius:6px;background:var(--paper)}
+.means i{font-family:var(--display);font-style:normal;font-weight:700;font-size:2.1rem;line-height:1;color:var(--ink-3);width:1.5rem;text-align:center}
+.means b{display:block;font-weight:600;font-size:1.1rem}
+.means div span{color:var(--ink-2);font-size:.94rem}
+.means em,.risks em{font-style:normal;font-family:var(--mono);font-size:.66rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;padding:.3rem .6rem;border-radius:99px;background:var(--orange-soft);color:var(--ink)}
+.means .ok{border-color:var(--green);border-left-color:var(--green);background:var(--green-soft)}
+.means .ok i{color:var(--ink)}
+.means .ok em{background:var(--green-deep);color:var(--on-deep)}
+.risks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
+.risks li{display:flex;flex-direction:column;gap:.4rem;padding:1rem 1.05rem 1.1rem;border:1px solid var(--rule);border-top:7px solid var(--ink-3);border-radius:6px;background:var(--paper)}
+.risks b{font-family:var(--display);font-weight:700;font-size:1.45rem;line-height:1.1;font-optical-sizing:none;font-variation-settings:"opsz" 26}
+.risks span{color:var(--ink-2);font-size:.95rem}
+.risks em{align-self:flex-start;background:var(--acc-deep);color:var(--on-deep)}
+.risks .focus{border-color:var(--acc);border-top-color:var(--acc);background:var(--acc-soft)}
+
+/* ---------- tables: 6 the note year by year · 8 ordinary bond and TIPS ---------- */
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th,.tbl td{padding:.5rem .65rem;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}
+.tbl th:first-child{text-align:left}
+.tbl thead th{font-family:var(--mono);font-weight:500;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);vertical-align:bottom}
+.tbl tbody th{font-weight:600}
+.tbl td{font-family:var(--mono)}
+#tbl5 tbody tr{cursor:pointer}
+#tbl5 tbody tr:hover{background:var(--acc-soft)}
+#tbl5 tbody tr.sel{background:var(--acc-deep);color:var(--on-deep)}
+.cmp{font-size:1rem}
+.cmp tbody th{white-space:normal;font-weight:500;color:var(--ink-2)}
+.cmp thead th{font-size:.72rem;color:var(--ink)}
+.cmp th,.cmp td{padding:.8rem .9rem}
+.cmp td{font-size:1.2rem;font-weight:500}
+.cmp td:nth-child(2),.cmp thead th:nth-child(2){background:var(--blue-soft)}
+.cmp td:nth-child(3),.cmp thead th:nth-child(3){background:var(--green-soft)}
+.cmp .res th{color:var(--ink);font-weight:600}
+.cmp .res td{font-family:var(--sans);font-weight:600;font-size:clamp(1.6rem,5vw,2.3rem);letter-spacing:-.01em;border-bottom:0}
+.cmp .res th{border-bottom:0}
+.cmp .res td:nth-child(2){background:var(--orange-soft)}
+#plate-6 .chart{min-height:11rem}
 
 /* ---------- 3 formula ---------- */
 .formula{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .7rem;font-family:var(--sans);font-weight:500;font-size:clamp(1.05rem,3.4vw,1.45rem);padding:1rem 0;border-block:1px solid var(--rule)}
@@ -245,11 +269,11 @@ input[type=range]{width:100%;accent-color:var(--blue);height:1.5rem;margin:0;cur
 .nav-b{width:2.3rem;height:2.3rem;border:1px solid var(--rule);border-radius:4px;font-size:1.05rem;display:grid;place-items:center;flex:none;background:var(--panel)}
 .nav-b:hover{border-color:var(--ink)}
 .nav-b[disabled]{opacity:.35;cursor:default}
-.segs{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;min-width:0}
+.segs{flex:1;display:grid;grid-template-columns:minmax(0,3fr) repeat(3,minmax(0,2fr));gap:.7rem;min-width:0}
 .grp{display:flex;flex-direction:column;gap:.25rem;min-width:0}
 .grp-l{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .grp.cur .grp-l{color:var(--ink);font-weight:600}
-.grp-s{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.grp-s{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:3px}
 .seg{height:1rem;display:flex;align-items:center}
 .grp:nth-child(1){--g:var(--blue)}.grp:nth-child(2){--g:var(--orange)}.grp:nth-child(3){--g:var(--violet)}.grp:nth-child(4){--g:var(--green)}
 .grp-l::before{content:"";display:inline-block;width:.45rem;height:.45rem;border-radius:50%;background:var(--g);margin-right:.4rem}
@@ -284,8 +308,12 @@ kbd{font-family:var(--mono);font-size:.62rem;border:1px solid currentColor;borde
   .qcard .face{min-height:9.5rem}
   .tool kbd,.grp-l{display:none}
   .segs{gap:.35rem}
-  .agenda button{grid-template-columns:3.6rem minmax(0,1fr)}
-  .ag-w{display:none}
+  .ag-n{display:none}
+  .ag-t{font-size:1.25rem}
+  .means li{grid-template-columns:auto minmax(0,1fr)}
+  .means em{grid-column:2;justify-self:start}
+  .risks{grid-template-columns:minmax(0,1fr)}
+  .cert-wrap{margin:0 auto}
 }
 @media (max-height:560px) and (min-width:901px){ .panel.grow{max-height:none} }
 @media (prefers-reduced-motion:reduce){ *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important} }
@@ -319,7 +347,7 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
 <div class="editbar" id="editbar" lang="it" hidden>
   <b>Modalità modifica</b>
   <span class="ed-hint" id="edStatus"></span>
-  <button id="edSpkBtn">Nomi speaker</button>
+  <button id="edSpkBtn">Titoli delle parti</button>
   <button id="edFlip" hidden>Gira le carte</button>
   <button id="edUndo">Annulla modifiche</button>
   <button class="ed-save" id="edSave">Salva e pubblica</button>
@@ -327,8 +355,8 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
 </div>
 
 <header class="hud">
-  <div class="hud-l"><span class="plate" id="plateNo">01 / 08</span><span class="who" id="who">Speaker 1</span></div>
-  <div class="ticker" title="Our example bond at the selected date">
+  <div class="hud-l"><span class="plate" id="plateNo">01 / 09</span><span class="who" id="who">Part 1</span></div>
+  <div class="ticker" title="The bond of the case study at the selected date">
     <span class="tk-name">UST 1.125% 2031</span>
     <span class="tk"><i>Date</i><b id="tkDate">–</b></span>
     <span class="tk"><i>Price</i><b id="tkPrice">–</b></span>
@@ -340,23 +368,142 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
 <main class="deck" id="deck">
 <canvas id="bg" aria-hidden="true"></canvas>
 
-<!-- 1 -->
+<!-- 1 cover -->
 <section class="slide on" id="plate-1" aria-label="Slide 1: cover">
  <div class="slide-inner">
   <div class="col-text">
    <p class="kicker">Finance group project · Risk of government bonds</p>
    <h1>Are government bonds always <em>“safe”</em>?</h1>
-   <p class="lead">Real bond returns in the inflation surge of 2021–23, tested on one real bond.</p>
-   <ol class="agenda" id="agenda"></ol>
+   <p class="lead">Real bond returns in the inflation surge of 2021–23.</p>
   </div>
   <div class="col-stage" data-noswipe>
-   <div class="cert-wrap" id="certWrap">
-    <div class="cert" id="cert" role="button" tabindex="0" aria-pressed="false" aria-label="Our example bond. Press to flip it and read its terms.">
+   <ol class="agenda" id="agenda"></ol>
+  </div>
+ </div>
+</section>
+
+<!-- 2 -->
+<section class="slide" id="plate-2" aria-label="Slide 2: why government bonds are called safe">
+ <div class="slide-inner">
+  <div class="col-text">
+   <p class="kicker">What “safe” means</p>
+   <h2>Why they are called <mark>safe</mark></h2>
+   <ul class="points">
+    <li><b>Low default risk</b><span>A financially strong government is unlikely to miss a payment: it can raise revenue through taxes.</span></li>
+    <li><b>High liquidity</b><span>Major government bonds trade all the time, so a seller can usually find a buyer quickly.</span></li>
+   </ul>
+  </div>
+  <div class="col-stage">
+   <div class="panel">
+    <div class="panel-head"><h3>“Safe” can mean three things</h3></div>
+    <ol class="means">
+     <li class="ok"><i>1</i><div><b>Receiving the promised payments</b><span>Interest and principal arrive in full and on time.</span></div><em>Strong point</em></li>
+     <li><i>2</i><div><b>Preserving the market value</b><span>The price at which the bond can be sold today.</span></div><em>Not guaranteed</em></li>
+     <li><i>3</i><div><b>Maintaining purchasing power</b><span>What the money received can actually buy.</span></div><em>Not guaranteed</em></li>
+    </ol>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="plate-3" aria-label="Slide 3: the risks that remain">
+ <div class="slide-inner">
+  <div class="col-text">
+   <p class="kicker">The risks that remain</p>
+   <h2>Low default risk is not <mark>risk-free</mark></h2>
+   <p class="lead">A bond can be safe in one sense and risky in another.</p>
+  </div>
+  <div class="col-stage">
+   <div class="panel">
+    <div class="panel-head"><h3>Four risks for the investor</h3></div>
+    <ul class="risks">
+     <li class="focus"><em>In focus today</em><b>Interest-rate risk</b><span>When market rates rise, existing fixed-rate bonds fall in price. Selling before maturity can mean a capital loss.</span></li>
+     <li class="focus"><em>In focus today</em><b>Inflation risk</b><span>Every payment arrives as promised, but the money buys less than expected.</span></li>
+     <li><b>Liquidity risk</b><span>In periods of market stress, selling quickly can become harder or mean a worse price.</span></li>
+     <li><b>Currency risk</b><span>For a bond in a foreign currency, exchange-rate changes affect the return in the investor’s own currency.</span></li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="plate-4" aria-label="Slide 4: nominal and real return">
+ <div class="slide-inner">
+  <div class="col-text">
+   <p class="kicker">Inflation risk</p>
+   <h2>What counts is the <mark>real</mark> return</h2>
+   <ul class="points">
+    <li><b>Nominal return</b><span>Before inflation: coupon income plus any change in price.</span></li>
+    <li><b>Real return</b><span>After inflation: the change in purchasing power.</span></li>
+   </ul>
+   <div class="formula" role="math" aria-label="Real return equals one plus nominal return, divided by one plus inflation rate, minus one">
+    <span>Real return</span><span>=</span>
+    <span class="frac"><span>1 + <mark class="m-blue">nominal return</mark></span><span>1 + <mark class="m-orange">inflation rate</mark></span></span>
+    <span>− 1</span>
+   </div>
+   <p class="formula-live" id="f3live"></p>
+  </div>
+  <div class="col-stage" data-noswipe>
+   <div class="panel">
+    <div class="panel-head"><h3>Try the formula</h3><div class="chips" id="presets3" role="group" aria-label="Examples"></div></div>
+    <label class="sl"><span class="sl-l"><i class="key box k-blue"></i>Nominal return</span><output id="o3n" for="r3n"></output>
+     <input type="range" id="r3n" min="-10" max="12" step="0.1" value="2"></label>
+    <label class="sl"><span class="sl-l"><i class="key box k-orange"></i>Inflation rate</span><output id="o3i" for="r3i"></output>
+     <input type="range" id="r3i" min="-3" max="12" step="0.1" value="8"></label>
+    <div class="bars3">
+     <div class="b3"><span>You invest</span><b>$1,000.00</b><div class="b3-track"><div class="b3-bar b-ink" style="width:76.923%"></div></div></div>
+     <div class="b3"><span>A year later, in dollars</span><b id="v3n"></b><div class="b3-track"><div class="b3-bar b-blue" id="b3n"></div></div></div>
+     <div class="b3"><span>What those dollars buy</span><b id="v3r"></b><div class="b3-track"><div class="b3-bar b-orange" id="b3r"></div></div></div>
+    </div>
+    <div class="result"><span>Real return</span><b id="res3"></b></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" id="plate-5" aria-label="Slide 5: the inflation surge and the double hit">
+ <div class="slide-inner">
+  <div class="col-text">
+   <p class="kicker">Inflation risk · the double hit</p>
+   <h2>Inflation <mark>outran</mark> the coupon</h2>
+   <ul class="points">
+    <li><b>9.1% in June 2022</b><span>The highest US inflation since 1981.</span></li>
+    <li><b>First hit: a negative real return</b><span>A 1.125% coupon against 9.1% inflation: 1.01125 ÷ 1.091 − 1 = −7.31%.</span></li>
+    <li><b>Second hit: a lower market price</b><span>Rates rise, new bonds pay more, existing bonds get cheaper.</span></li>
+   </ul>
+   <div class="tiles">
+    <div class="tile t-blue"><span>$1,000 plus the coupon</span><b>$1,011.25</b></div>
+    <div class="tile t-orange"><span>Worth, after inflation</span><b>$926.90</b></div>
+    <div class="tile t-orange"><span>Real return</span><b>−7.31%</b></div>
+   </div>
+  </div>
+  <div class="col-stage" data-noswipe>
+   <div class="panel grow">
+    <div class="panel-head"><h3>US consumer prices, change on a year earlier</h3>
+     <div class="legend"><span><i class="key box k-orange"></i>CPI inflation</span><span><i class="key k-blue"></i>A 1.125% coupon</span></div></div>
+    <div class="chart" id="c4" tabindex="0" aria-label="Monthly inflation chart. Use left and right arrows to move through the months."></div>
+    <p class="foot">Hover or tap a month. Source: U.S. Bureau of Labor Statistics, CPI-U.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- 6 -->
+<section class="slide" id="plate-6" aria-label="Slide 6: the 2021 to 2023 case">
+ <div class="slide-inner">
+  <div class="col-text">
+   <p class="kicker">Case study · 2021–23</p>
+   <h2>One real bond through the <mark>surge</mark></h2>
+   <div class="cert-wrap" id="certWrap" data-noswipe>
+    <div class="cert" id="cert" role="button" tabindex="0" aria-pressed="false" aria-label="The bond of the case study. Press to flip it and read its terms.">
      <div class="flip-in">
       <div class="face front">
        <canvas id="guilloche" aria-hidden="true"></canvas>
        <div class="cert-body">
-        <div class="cert-row"><span>Our example bond</span><span>CUSIP 91282CBL4</span></div>
+        <div class="cert-row"><span>The bond we follow</span><span>CUSIP 91282CBL4</span></div>
         <div>
          <p class="cert-issuer">United States Treasury</p>
          <p class="cert-kind">10-year note · issued 16 Feb 2021</p>
@@ -376,142 +523,35 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
          <dt>Coupon</dt><dd>1.125% a year, $0.5625 every Feb and Aug</dd>
          <dt>Auction yield</dt><dd>1.155%</dd>
          <dt>Auction price</dt><dd>$99.72 per $100</dd>
-         <dt>Auction size</dt><dd>$41 billion</dd>
         </dl>
        </div>
       </div>
      </div>
     </div>
    </div>
-   <label class="timebar"><span>Move it through time</span>
-    <input type="range" id="coverRange" min="0" max="720" step="1" value="720" aria-label="Selected date">
-    <b id="coverDate">–</b></label>
-  </div>
- </div>
-</section>
-
-<!-- 2 -->
-<section class="slide" id="plate-2" aria-label="Slide 2: default risk">
- <div class="slide-inner">
-  <div class="col-text">
-   <p class="kicker">Default risk</p>
-   <h2>Why they are called <mark>safe</mark></h2>
-   <ul class="points">
-    <li><b>A government rarely defaults</b><span>Default is the risk people think of first, and it is very unlikely.</span></li>
-    <li><b>The market agreed</b><span>Investors lent for ten years at just 1.155% a year.</span></li>
-    <li><b>Unlikely is not never</b><span>Greece, 2012: private holders lost 53.5% of face value.</span></li>
-   </ul>
-  </div>
-  <div class="col-stage" data-noswipe>
-   <div class="panel" id="sheet">
-    <div class="panel-head">
-     <h3>What the bond promises, per $100</h3>
-     <div class="chips" role="group" aria-label="Scenario">
-      <button class="chip" data-case="us" aria-pressed="true">Paid in full</button>
-      <button class="chip" data-case="gr" aria-pressed="false">Greece 2012 haircut</button>
-     </div>
-    </div>
-    <div class="coupons" id="coupons"></div>
-    <div class="stub"><span>Face value · 15 Feb 2031</span><span><s id="stubOld" hidden>$100</s><b id="stubVal">$100</b></span></div>
-    <p class="sheet-sum" id="sheetSum"></p>
-   </div>
-  </div>
- </div>
-</section>
-
-<!-- 3 -->
-<section class="slide" id="plate-3" aria-label="Slide 3: real return">
- <div class="slide-inner">
-  <div class="col-text">
-   <p class="kicker">Inflation risk</p>
-   <h2>What counts is the <mark>real</mark> return</h2>
-   <div class="formula" role="math" aria-label="Real return equals one plus nominal return, divided by one plus inflation rate, minus one">
-    <span>Real return</span><span>=</span>
-    <span class="frac"><span>1 + <mark class="m-blue">nominal return</mark></span><span>1 + <mark class="m-orange">inflation rate</mark></span></span>
-    <span>− 1</span>
-   </div>
-   <p class="formula-live" id="f3live"></p>
-   <p class="lead">Dollars are fixed. What they buy is not.</p>
-  </div>
-  <div class="col-stage" data-noswipe>
-   <div class="panel">
-    <div class="panel-head"><h3>Try it on our bond</h3><div class="chips" id="presets3" role="group" aria-label="Presets"></div></div>
-    <label class="sl"><span class="sl-l"><i class="key box k-blue"></i>Nominal return</span><output id="o3n" for="r3n"></output>
-     <input type="range" id="r3n" min="-20" max="12" step="0.1" value="-15.5"></label>
-    <label class="sl"><span class="sl-l"><i class="key box k-orange"></i>Inflation rate</span><output id="o3i" for="r3i"></output>
-     <input type="range" id="r3i" min="-3" max="12" step="0.1" value="6.5"></label>
-    <div class="bars3">
-     <div class="b3"><span>You invest</span><b>$100.00</b><div class="b3-track"><div class="b3-bar b-ink" style="width:76.923%"></div></div></div>
-     <div class="b3"><span>A year later, in dollars</span><b id="v3n"></b><div class="b3-track"><div class="b3-bar b-blue" id="b3n"></div></div></div>
-     <div class="b3"><span>What those dollars buy</span><b id="v3r"></b><div class="b3-track"><div class="b3-bar b-orange" id="b3r"></div></div></div>
-    </div>
-    <div class="result"><span>Real return</span><b id="res3"></b></div>
-   </div>
-  </div>
- </div>
-</section>
-
-<!-- 4 -->
-<section class="slide" id="plate-4" aria-label="Slide 4: the inflation surge">
- <div class="slide-inner">
-  <div class="col-text">
-   <p class="kicker">Inflation risk · 2021–23</p>
-   <h2>Inflation <mark>outran</mark> the coupon</h2>
-   <ul class="points">
-    <li><b>9.1% in June 2022</b><span>The highest US inflation since 1981.</span></li>
-    <li><b>The coupon never moved</b><span>Coupons and face value stay fixed; their purchasing power falls.</span></li>
-   </ul>
-   <p class="asof" id="asof4"></p>
-   <div class="tiles">
-    <div class="tile t-orange"><span>Prices since purchase</span><b id="t4a"></b></div>
-    <div class="tile t-blue"><span>$100 of face value buys</span><b id="t4b"></b></div>
-    <div class="tile t-blue"><span>A $0.5625 coupon buys</span><b id="t4c"></b></div>
-   </div>
   </div>
   <div class="col-stage" data-noswipe>
    <div class="panel grow">
-    <div class="panel-head"><h3>US consumer prices, change on a year earlier</h3>
-     <div class="legend"><span><i class="key box k-orange"></i>CPI inflation</span><span><i class="key k-blue"></i>Bond coupon</span></div></div>
-    <div class="chart" id="c4" tabindex="0" aria-label="Monthly inflation chart. Use left and right arrows to move through the months."></div>
-    <p class="foot">Hover or tap a month. Source: U.S. Bureau of Labor Statistics, CPI-U.</p>
-   </div>
-  </div>
- </div>
-</section>
-
-<!-- 5 -->
-<section class="slide" id="plate-5" aria-label="Slide 5: interest-rate risk">
- <div class="slide-inner">
-  <div class="col-text">
-   <p class="kicker">Interest-rate risk</p>
-   <h2>Rates up, <mark>prices down</mark></h2>
-   <ul class="points">
-    <li><b>The Fed fought inflation</b><span>Policy rate from 0.25% to 5.50% in 11 hikes, March 2022 to July 2023.</span></li>
-    <li><b>New bonds paid more</b><span>So a 1.125% bond had to get cheaper to find a buyer.</span></li>
-   </ul>
-   <div class="tiles">
-    <div class="tile t-blue"><span>Price at this yield</span><b id="t5p"></b></div>
-    <div class="tile"><span>Versus auction price</span><b id="t5d"></b></div>
-    <div class="tile"><span>Yield up 1 more point</span><b id="t5s"></b></div>
-   </div>
-  </div>
-  <div class="col-stage" data-noswipe>
-   <div class="panel grow">
-    <div class="panel-head"><h3>Price of our bond at any market yield</h3><div class="chips" id="dates5" role="group" aria-label="Date"></div></div>
+    <div class="panel-head"><h3>The note, year by year</h3><span class="asof" id="asof5"></span></div>
+    <div class="tbl-wrap">
+     <table class="tbl" id="tbl5">
+      <thead><tr><th>Date</th><th>CPI inflation</th><th>Fed target range</th><th>Yield on the note</th><th>Price per $100</th></tr></thead>
+      <tbody id="tb5"></tbody>
+     </table>
+    </div>
     <div class="chart" id="c5"></div>
-    <label class="sl"><span class="sl-l"><i class="key box k-blue"></i>Market yield <span class="asof" id="asof5"></span></span><output id="o5" for="r5"></output>
-     <input type="range" id="r5" min="0" max="6" step="0.01" value="3.88"></label>
+    <p class="foot">Click a row or move over the chart. Price and yield modelled from the daily U.S. Treasury yield curve.</p>
    </div>
   </div>
  </div>
 </section>
 
-<!-- 6 -->
-<section class="slide" id="plate-6" aria-label="Slide 6: what happened to our bond">
+<!-- 7 -->
+<section class="slide" id="plate-7" aria-label="Slide 7: what happened to the bondholder">
  <div class="slide-inner">
   <div class="col-text">
-   <p class="kicker">Interest-rate risk · 2021–23</p>
-   <h2><mark>$100</mark> in our bond, 2021 to 2023</h2>
+   <p class="kicker">Case study · the bondholder</p>
+   <h2><mark>$100</mark> in the note, 2021 to 2023</h2>
    <dl class="read">
     <dt>Date</dt><dd id="r6date"></dd>
     <dt>Market price</dt><dd id="r6p"></dd>
@@ -534,59 +574,61 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
  </div>
 </section>
 
-<!-- 7 -->
-<section class="slide" id="plate-7" aria-label="Slide 7: inflation-indexed bonds">
+<!-- 8 -->
+<section class="slide" id="plate-8" aria-label="Slide 8: inflation-indexed bonds">
  <div class="slide-inner">
   <div class="col-text">
    <p class="kicker">Protection</p>
    <h2>A hedge: <mark>inflation-indexed</mark> bonds</h2>
    <ul class="points">
-    <li><b>Payments follow prices</b><span>Principal and coupons rise with the CPI. In the US they are called TIPS.</span></li>
-    <li><b>Protection has a price</b><span>A lower base rate: −0.95% a year after inflation in February 2021.</span></li>
-    <li><b>Deflation flips the result</b><span>If inflation stays low or prices fall, the plain bond earns more.</span></li>
+    <li><b>The principal follows prices</b><span>A US TIPS adjusts its principal with inflation.</span></li>
+    <li><b>The coupon is paid on that principal</b><span>The rate is fixed; the dollars paid rise with prices.</span></li>
+    <li><b>The trade-off</b><span>A lower coupon rate than an ordinary bond, and lower payments if prices fall.</span></li>
    </ul>
-   <p class="asof">Sold in December 2023, in purchasing power</p>
-   <div class="tiles">
-    <div class="tile t-blue"><span>Plain note</span><b>−25.9%</b></div>
-    <div class="tile t-green"><span>TIPS, same maturity</span><b>−18.2%</b></div>
-   </div>
-   <p class="foot">TIPS still fell because real yields rose from −0.95% to 1.72%.</p>
   </div>
-  <div class="col-stage" data-noswipe>
-   <div class="panel grow">
-    <div class="panel-head"><h3>Real return per year if held to 2031</h3><div class="chips" id="presets7" role="group" aria-label="Inflation scenarios"></div></div>
-    <div class="chart" id="c7"></div>
-    <label class="sl"><span class="sl-l">Average inflation until 2031</span><output id="o7" for="r7"></output>
-     <input type="range" id="r7" min="-2" max="8" step="0.1" value="5.5"></label>
-    <p class="sheet-sum" id="sum7"></p>
+  <div class="col-stage">
+   <div class="panel">
+    <div class="panel-head"><h3>The same example, as a TIPS</h3><span class="asof">$1,000 · 1.125% coupon · 9.1% inflation</span></div>
+    <div class="tbl-wrap">
+     <table class="tbl cmp">
+      <thead><tr><th>After one year</th><th>Ordinary bond</th><th>Hypothetical TIPS</th></tr></thead>
+      <tbody>
+       <tr><th>Principal after inflation adjustment</th><td>$1,000</td><td>$1,091</td></tr>
+       <tr><th>Interest, using the simplified annual calculation</th><td>$11.25</td><td>$12.27</td></tr>
+       <tr><th>Principal plus interest</th><td>$1,011.25</td><td>$1,103.27</td></tr>
+       <tr class="res"><th>Real return in this illustration</th><td>−7.31%</td><td>+1.125%</td></tr>
+      </tbody>
+     </table>
+    </div>
+    <p class="foot">Simplified to one annual payment: a real TIPS adjusts and pays every six months. If real yields rise, a TIPS sold before maturity can still lose value.</p>
    </div>
   </div>
  </div>
 </section>
 
-<!-- 8 -->
-<section class="slide" id="plate-8" aria-label="Slide 8: verdict">
+<!-- 9 -->
+<section class="slide" id="plate-9" aria-label="Slide 9: conclusion">
  <div class="slide-inner verdict">
   <div class="col-text">
-   <p class="kicker">Verdict</p>
-   <h2>Safe? It <mark>depends</mark> on the question</h2>
+   <p class="kicker">Conclusion</p>
+   <h2>Safe from <mark>what</mark>?</h2>
   </div>
   <div class="v-cards" data-noswipe>
    <div class="qcard yes" role="button" tabindex="0" aria-pressed="false"><div class="flip-in">
-    <div class="face front"><span class="q-n">Question 1</span><p class="q">Will I be paid back?</p><span class="q-hint">Tap to reveal</span></div>
-    <div class="face back"><span class="q-n">Default risk</span><p class="a">Yes</p><p class="a-d">Every coupon arrived on time. Default risk is close to zero.</p></div>
+    <div class="face front"><span class="q-n">Question 1</span><p class="q">Safe from default?</p><span class="q-hint">Tap to reveal</span></div>
+    <div class="face back"><span class="q-n">Default risk</span><p class="a">Yes</p><p class="a-d">Every promised payment was made, in full and on time.</p></div>
    </div></div>
    <div class="qcard no" role="button" tabindex="0" aria-pressed="false"><div class="flip-in">
-    <div class="face front"><span class="q-n">Question 2</span><p class="q">Can I sell early without a loss?</p><span class="q-hint">Tap to reveal</span></div>
-    <div class="face back"><span class="q-n">Interest-rate risk</span><p class="a">No</p><p class="a-d">The price fell from 99.72 to 82.98, a drop of 16.8%.</p></div>
+    <div class="face front"><span class="q-n">Question 2</span><p class="q">Safe from inflation?</p><span class="q-hint">Tap to reveal</span></div>
+    <div class="face back"><span class="q-n">Inflation risk</span><p class="a">No</p><p class="a-d">A 1.125% coupon against 9.1% inflation is a real return of −7.31%. A TIPS would have kept its purchasing power.</p></div>
    </div></div>
    <div class="qcard no" role="button" tabindex="0" aria-pressed="false"><div class="flip-in">
-    <div class="face front"><span class="q-n">Question 3</span><p class="q">Will my money buy the same?</p><span class="q-hint">Tap to reveal</span></div>
-    <div class="face back"><span class="q-n">Inflation risk</span><p class="a">No</p><p class="a-d">$100 invested buys what $74.13 bought in 2021: −25.9% in real terms.</p></div>
+    <div class="face front"><span class="q-n">Question 3</span><p class="q">Safe if you sell early?</p><span class="q-hint">Tap to reveal</span></div>
+    <div class="face back"><span class="q-n">Interest-rate risk</span><p class="a">No</p><p class="a-d">Higher rates lowered market prices. A TIPS is exposed too when real yields rise.</p></div>
    </div></div>
   </div>
-  <p class="closing">Government bonds are safe in <mark class="m-blue">nominal</mark> terms. In <mark class="m-orange">real</mark> terms, 2021 to 2023 showed they are not.</p>
-  <p class="sources">Sources: TreasuryDirect auction results (CUSIP 91282CBL4 and 91282CBF7); U.S. Treasury daily par and real yield curves; U.S. Bureau of Labor Statistics CPI-U, not seasonally adjusted. Bond and TIPS prices are modelled from the yield curve at the remaining maturity, so market quotes can differ slightly. Coupons are kept as cash. Greece: March 2012 debt exchange.</p>
+  <p class="closing">TIPS protect against <mark class="m-orange">inflation</mark>, but that does not make them free from every <mark class="m-blue">risk</mark>.</p>
+  <p class="sources">Sources: TreasuryDirect auction results (CUSIP 91282CBL4); U.S. Treasury daily par yield curve; U.S. Bureau of Labor Statistics CPI-U, not seasonally adjusted; Federal Reserve FOMC statements. The note’s price and yield are modelled from the yield curve at the remaining maturity, so market quotes can differ slightly. Coupons are kept as cash. The TIPS table is a simplified illustration.</p>
  </div>
 </section>
 </main>
@@ -605,9 +647,9 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
   <p class="notes-time">About one minute. Press N to hide.</p>
 </aside>
 
-<div class="ed-pop" id="edSpk" lang="it" hidden><div class="ed-card" role="dialog" aria-label="Nomi degli speaker">
-  <h4>Nomi degli speaker</h4>
-  <p>A sinistra il nome, a destra il titolo della sua parte. Le modifiche si vedono subito.</p>
+<div class="ed-pop" id="edSpk" lang="it" hidden><div class="ed-card" role="dialog" aria-label="Titoli delle parti">
+  <h4>Titoli delle parti</h4>
+  <p>A sinistra l’etichetta della parte (Part 1, Part 2…), a destra il suo titolo. Le modifiche si vedono subito.</p>
   <div class="ed-rows" id="edSpkRows"></div>
   <div class="ed-actions"><button class="btn" id="edSpkOk">Fatto</button></div>
 </div></div>
@@ -630,45 +672,54 @@ body.editing [contenteditable]:focus{outline:2px solid currentColor;box-shadow:0
 (() => {
 'use strict';
 const SRC0 = /[?&]edit\b/.test(location.search) ? '<!doctype html>\n' + document.documentElement.outerHTML : '';
-/* ===== people and script: change names here ===== */
+/* ===== parts and script: the slides carry no speaker names, only the title of each part ===== */
 const SPEAKERS = [
-  {name:'Speaker 1', topic:'Safe from what?'},
-  {name:'Speaker 2', topic:'Inflation risk'},
-  {name:'Speaker 3', topic:'Interest-rate risk'},
-  {name:'Speaker 4', topic:'Protection and verdict'}
+  {name:'Part 1', topic:'What “safe” means', desc:'Low default risk, high liquidity, and the risks that remain.'},
+  {name:'Part 2', topic:'Inflation risk', desc:'Nominal return is not real return. The double hit.'},
+  {name:'Part 3', topic:'The 2021–2023 case', desc:'One US Treasury note through the inflation surge.'},
+  {name:'Part 4', topic:'Protection and conclusion', desc:'Inflation-indexed bonds, and what “safe” leaves out.'}
 ];
 const NOTES = [
- ['Open with the question: most people call government bonds risk-free. We test that on one real bond.',
-  'Introduce it: a 10-year US Treasury note issued on 16 February 2021, coupon 1.125%, due February 2031. Tap the bond to flip it and show the terms.',
-  'Drag the date bar once: the ticker at the top follows the bond through 2021–23 for the whole presentation.',
-  'Roadmap: default risk, inflation risk, interest-rate risk, then protection and our verdict.'],
- ['Why people say safe: the main risk they think of is default, and a government default is very unlikely.',
-  'The low interest rate shows it. Investors lent for ten years at only 1.155%.',
-  'It is not literally zero. Press “Greece 2012 haircut”: private holders lost 53.5% of face value.',
-  'You cannot hedge default risk, you can only avoid the bond. But look at the sheet: every payment is fixed in dollars. Hand over to {s2}.'],
- ['Inflation devalues the real return. Read the formula once, slowly.',
-  'Press 2022: the bond returned −15.5% while prices rose 6.5%, so the real return was about −20.7%.',
-  'Press “Hold to maturity”: even without selling, 1.155% a year against 2% inflation is a negative real return.',
-  'Invite someone in the audience to pick the two numbers.'],
- ['Move across the bars: inflation went from 1.4% in January 2021 to 9.1% in June 2022, the highest since 1981.',
-  'The blue line is our coupon, 1.125%. Inflation was above it in every month of the three years.',
-  'Coupon and face value stay the same, their purchasing power does not. By December 2023 prices were up 16.6%: $100 of face value buys what $85.74 bought at purchase.',
-  'Hand over: inflation also hurts through a second channel, interest rates.'],
- ['When inflation rises, central banks raise interest rates to discourage borrowing and spending. The Fed went from 0.25% to 5.50%.',
-  'New bonds then pay more, so nobody pays full price for our 1.125% bond. Drag the yield slider: yield up, price down.',
-  'Press the date buttons: 99.72 at issue, 80.64 at the end of 2022, 76.49 at the low in October 2023.',
-  'This loss is realised only if you sell before maturity. If you wait, you stay locked into 1.125% while prices rise.'],
- ['Press Play. We invest $100 at issue. Blue is the value in dollars, price plus coupons. Orange is what that money can buy.',
-  'End of 2023: $86.45 in dollars, −13.5%. After 16.6% inflation that is $74.13 of purchasing power, −25.9%.',
-  'Worst day: 19 October 2023, when the 10-year yield reached 4.98%. In real terms the position was down about 32%.',
-  'Two hits at once: the price fell, and the dollars themselves lost value.'],
- ['One protection is an inflation-indexed bond: principal and coupons rise with the CPI, so the real return is fixed in advance.',
-  'The trade-off is a low base rate. In February 2021 the real yield on TIPS was −0.95%: investors paid for the protection.',
-  'Move the slider: below about 2.1% inflation the plain bond wins, and in deflation it wins clearly. Above 2.1% TIPS win.',
-  'In 2021–23 TIPS lost less, −18% against −26% in real terms, but still lost because real yields rose.'],
+ ['Open with the question: government bonds are considered among the safest investments. Does that mean investors cannot lose money by holding them?',
+  'Say what we look at: government bond investors during the inflation surge of 2021–2023.',
+  'Mention our example in one sentence: a 10-year US Treasury note issued in February 2021, coupon 1.125%, face value $100. It comes on screen in Part 3.',
+  'Roadmap, reading the four cards: what “safe” means, inflation risk, the 2021–2023 case, protection and conclusion.'],
+ ['A safe investment carries a low risk of financial loss. But safety can mean three things: receiving the promised payments, preserving the market value, maintaining purchasing power. Point at the three rows.',
+  'Why government bonds are called safe: low default risk. A strong government can raise revenue through taxes, and one that borrows in its own currency has more flexibility.',
+  'Second reason: liquidity. US Treasuries are actively traded, so investors can sell quickly without moving the price much.',
+  'If the professor asks about the panel: government bonds are strong on the first meaning of “safe”. The other two are not guaranteed, which is the next slide.'],
+ ['Low default risk does not mean risk-free. Go through the four cards.',
+  'Interest-rate risk: when market rates rise, existing fixed-rate bonds fall in price, so selling before maturity can mean a capital loss. Inflation risk: every payment arrives, but the money buys less.',
+  'Liquidity risk appears in periods of market stress. Currency risk concerns bonds held in a foreign currency.',
+  'Close: a bond can be safe for its promised payments and still lose market value or purchasing power. Inflation risk matters most for us. Hand over to Part 2.'],
+ ['A government bond can deliver exactly what it promised and still generate a loss. Nominal return is the return before inflation: coupon income plus price changes. Real return adjusts it for inflation: the change in purchasing power.',
+  'Read the formula once: one plus the nominal return, divided by one plus the inflation rate, minus one.',
+  'The panel starts on the simple case: $1,000 at a 2% nominal return becomes $1,020; with 8% inflation the real return is about −5.6%, worth about $944.',
+  'If the professor asks about the bars: grey is the money invested, blue is the dollars a year later, orange is what those dollars buy. The real return is negative whenever inflation is above the nominal return.',
+  'Change slide when you move to the 1.125% example.'],
+ ['Now the specific example. US inflation peaked at 9.1% in June 2022, the highest since 1981: point at the tallest bar. The blue line is a 1.125% coupon.',
+  'The calculation: 1.01125 ÷ 1.091 − 1 = −7.31%. On $1,000 of face value the coupon is $11.25; after inflation the $1,011.25 is worth $926.90.',
+  'Second effect: when inflation rises, central banks raise interest rates, new bonds offer higher yields, and existing low-coupon bonds must fall in price.',
+  'The double hit: a negative real return and a lower market price. Held to maturity, the nominal principal comes back; sold earlier, the loss may be realised.',
+  'If the professor asks about the chart: each bar is US consumer-price inflation for one month, compared with the same month a year earlier (BLS, CPI-U). Hand over to Part 3.'],
+ ['Introduce the note: a US Treasury 10-year note, coupon 1.125%, issued on 16 February 2021, due on 15 February 2031. Tap the certificate to show its terms.',
+  'Brief background: pandemic supply and demand imbalances and energy prices pushed inflation up; Russia’s invasion of Ukraine added pressure in 2022.',
+  'Click the rows in order. 2021: inflation reached 7.0% while the Fed stayed near zero, and the price slipped to 96.84. 2022: first hike on 16 March, inflation 9.1% in June, price 80.64 at year end. 2023: Fed at 5.25–5.50% from 26 July, low of 76.49 on 19 October, recovery to 82.98.',
+  'Two observations: the price did not fall continuously, and lower inflation in 2023 means prices rose more slowly, not that they came back down.',
+  'If the professor asks about the chart: the line is the price of the note per $100 of face value, down 16.8% over the period before coupons. It is modelled from the daily Treasury yield curve, so official quotes can differ slightly.'],
+ ['Press Play. $100 is invested at issue. Blue is its value in dollars: price plus the coupons received. Orange is what that money can buy.',
+  'End of 2023: $86.45 in dollars, −13.5%. Prices rose 16.6% in the meantime, so that is $74.13 of purchasing power, −25.9%.',
+  'Why existing holders were exposed: a low coupon gave little cushion, most of the value is the repayment in 2031 so it is sensitive to yields, and anyone needing cash had to sell at the lower price.',
+  'This is the double hit made visible: repricing cut the dollar value, inflation cut what the remaining dollars buy. No default was needed. Hand over to Part 4.',
+  'If the professor asks about the chart: the shaded gap between the two lines is the part lost to inflation. Coupons are kept as cash, with no taxes or costs.'],
+ ['So what happened to bondholders? Many suffered a significant loss of purchasing power. One protection is an inflation-indexed bond, in the US called TIPS.',
+  'How it works: the principal is adjusted for inflation, and the fixed coupon rate is paid on the adjusted principal.',
+  'The trade-off: the coupon rate is usually lower than on an ordinary bond, and in deflation coupons are paid on a lower principal. At maturity a TIPS still repays at least the original face value.',
+  'Read the table: $1,000 grows by 9.1% to $1,091; the 1.125% coupon on it is $12.27; the total is $1,103.27, a real return of +1.125% against −7.31% for the ordinary bond.',
+  'If the professor asks about the table: it is a simplified one-year illustration with a single annual coupon. A real TIPS adjusts and pays every six months, and its market price can still fall when real yields rise.'],
  ['Reveal the three cards one at a time and let the audience answer first.',
-  'Conclusion: relatively safe against default, exposed to inflation and to rising rates. “Risk-free” describes the nominal promise only.',
-  'Close: how safe a government bond is depends on your horizon and on whether you count dollars or what they buy.',
+  'The effects of inflation are not totally mitigated: rising real yields lower the price of a TIPS, despite the inflation-adjusted principal.',
+  'Conclusion: 2021–2023 shows why we must ask “safe from what?”. TIPS protect against inflation, but that does not make them free from every investment risk.',
   'Thank the audience and open the floor to questions.']
 ];
 
@@ -747,9 +798,9 @@ $$('.slide').forEach((sl, k) => { const seen = {};
   }); });
 
 /* ===== state ===== */
-const st = {slide:0, di:N-1, y5:D.y[N-1], m4:35, n3:-15.5, i3:6.5, pi7:5.5, playing:false};
+const st = {slide:0, di:N-1, m4:17, n3:2, i3:8, playing:false};
 const subs = [];
-function setDay(i){ i = clamp(Math.round(i), 0, N-1); if (i === st.di) return; st.di = i; st.y5 = D.y[i]; subs.forEach(f => f()); }
+function setDay(i){ i = clamp(Math.round(i), 0, N-1); if (i === st.di) return; st.di = i; subs.forEach(f => f()); }
 
 /* ===== ticker ===== */
 subs.push(() => {
@@ -757,12 +808,10 @@ subs.push(() => {
   $('#tkPrice').textContent = D.p[st.di].toFixed(2);
   $('#tkYield').textContent = D.y[st.di].toFixed(2) + '%';
   $('#tkReal').textContent = usd(RV[st.di]);
-  $('#coverDate').textContent = fmtDate(dms(st.di));
-  $('#coverRange').value = st.di; $('#r6').value = st.di;
+  $('#r6').value = st.di;
 });
-$('#coverRange').addEventListener('input', e => setDay(+e.target.value));
 
-/* ===== 1 cover ===== */
+/* ===== 1 cover agenda · 6 the certificate ===== */
 const cert = $('#cert'), certWrap = $('#certWrap');
 pressable(cert, () => { const f = cert.classList.toggle('is-flipped'); cert.setAttribute('aria-pressed', f); });
 if (!reduced) {
@@ -801,39 +850,25 @@ function bgDraw(){                                                /* banknote ro
   ros(W*1.01, -Hh*.05, R2, 12, .8, .16, 16, .3);
 }
 const agenda = $('#agenda'), spkEls = [];
+const secOf = n => n ? (n-1) >> 1 : 0;                              /* slide 0 is the cover; then two slides per part */
 SPEAKERS.forEach((s, k) => { const li = H('li'), b = H('button'), w = H('span', 'ag-w', s.name), t = H('span', 'ag-t', s.topic);
-  b.append(H('span', 'ag-n', String(k*2+1).padStart(2,'0') + '–' + String(k*2+2).padStart(2,'0')), w, t);
-  b.addEventListener('click', () => editing ? openSpk(k) : go(k*2)); li.append(b); agenda.append(li); spkEls.push({w, t}); });
+  b.append(w, t, H('span', 'ag-d', s.desc), H('span', 'ag-n', 'slides ' + (k*2+2) + '–' + (k*2+3)));
+  b.addEventListener('click', () => editing ? openSpk(k) : go(k*2+1)); li.append(b); agenda.append(li); spkEls.push({w, t}); });
 function renderSpeakers(){
   SPEAKERS.forEach((s, k) => { const e = spkEls[k]; e.w.textContent = s.name; e.t.textContent = s.topic; e.l.textContent = s.name + ' · ' + s.topic; });
-  agenda.style.setProperty('--agw', clamp(Math.max(...SPEAKERS.map(s => s.name.length))*.52 + .4, 6.4, 13).toFixed(2) + 'rem');
 }
 
-/* ===== 2 promise ===== */
-const cpnBox = $('#coupons'); let haircut = false;
-COUPONS.forEach(ms => { const d = new Date(ms), c = H('div', 'cpn'); c.append(H('i', '', MON[d.getUTCMonth()] + ' ' + d.getUTCFullYear()), H('b', '', '')); cpnBox.append(c); });
-function upd2(){
-  const f = haircut ? .465 : 1, paid = paidBy(dms(st.di));
-  [...cpnBox.children].forEach((c, k) => { c.classList.toggle('paid', k < paid); c.lastChild.textContent = '$' + (CPN/2*f).toFixed(4); });
-  $('#sheet').classList.toggle('haircut', haircut);
-  $('#stubOld').hidden = !haircut; $('#stubVal').textContent = haircut ? '$46.50' : '$100';
-  const s = $('#sheetSum'); s.textContent = '';
-  if (haircut) s.append('Illustration: the 53.5% cut in face value from Greece’s 2012 debt exchange, applied to our bond. Promised total falls to ', H('b', '', usd(111.25*f)), '.');
-  else s.append('20 coupons × $0.5625 + $100 = ', H('b', '', '$111.25'), '. Every payment is fixed in dollars. ' + paid + ' of 20 coupons paid by ' + fmtDate(dms(st.di)) + '.');
-}
-$$('[data-case]').forEach(b => b.addEventListener('click', () => { haircut = b.dataset.case === 'gr'; $$('[data-case]').forEach(x => x.setAttribute('aria-pressed', x === b)); upd2(); }));
-subs.push(upd2);
-
-/* ===== 3 formula ===== */
-const P3 = [['2021 from issue', -1.9, 6.0], ['2022', -15.5, 6.5], ['2023', 4.3, 3.4], ['Hold to maturity, 2% inflation', 1.155, 2.0]];
+/* ===== 4 formula ===== */
+const usdK = v => '$' + v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const P3 = [['2% return, 8% inflation', 2, 8], ['1.125% coupon, 9.1% inflation', 1.125, 9.1], ['4% return, 2% inflation', 4, 2]];
 function upd3(){
-  const n = st.n3, i = st.i3, real = ((1+n/100)/(1+i/100)-1)*100, nomV = 100+n, realV = 100*(1+n/100)/(1+i/100);
-  $('#o3n').textContent = pct(n, n === 1.155 ? 3 : 1); $('#o3i').textContent = pct(i);
-  $('#v3n').textContent = usd(nomV); $('#v3r').textContent = usd(realV);
-  $('#b3n').style.width = (nomV/1.3) + '%'; $('#b3r').style.width = (realV/1.3) + '%';
-  $('#res3').textContent = pct(real); $('#res3').parentElement.classList.toggle('pos', real >= 0);
+  const n = st.n3, i = st.i3, real = ((1+n/100)/(1+i/100)-1)*100, nomV = 1000*(1+n/100), realV = nomV/(1+i/100), dn = n === 1.125 ? 3 : 1;
+  $('#o3n').textContent = pct(n, dn); $('#o3i').textContent = pct(i);
+  $('#v3n').textContent = usdK(nomV); $('#v3r').textContent = usdK(realV);
+  $('#b3n').style.width = (nomV/13) + '%'; $('#b3r').style.width = (realV/13) + '%';
+  $('#res3').textContent = pct(real, 2); $('#res3').parentElement.classList.toggle('pos', real >= 0);
   const f = $('#f3live'); f.textContent = '';
-  f.append('(1 ' + (n < 0 ? '− ' : '+ ') + Math.abs(n).toFixed(n === 1.155 ? 3 : 1) + '%) ÷ (1 ' + (i < 0 ? '− ' : '+ ') + Math.abs(i).toFixed(1) + '%) − 1 = ', H('b', '', pct(real)));
+  f.append('(1 ' + (n < 0 ? '− ' : '+ ') + Math.abs(n).toFixed(dn) + '%) ÷ (1 ' + (i < 0 ? '− ' : '+ ') + Math.abs(i).toFixed(1) + '%) − 1 = ', H('b', '', pct(real, 2)));
   $$('#presets3 .chip').forEach((b, k) => b.setAttribute('aria-pressed', P3[k][1] === n && P3[k][2] === i));
 }
 P3.forEach(p => { const b = H('button', 'chip', p[0]); b.addEventListener('click', () => { st.n3 = p[1]; st.i3 = p[2]; $('#r3n').value = p[1]; $('#r3i').value = p[2]; upd3(); }); $('#presets3').append(b); });
@@ -854,70 +889,59 @@ function draw4(){
   const peak = E('text', {x:m.l+17.5*bw, y:y(9.1)-7, 'text-anchor':'middle', class:'lbl'}, '9.1% · Jun 2022'); svg.append(peak);
   const sel = E('text', {'text-anchor':'middle', class:'lbl'}); svg.append(sel);
   D.yoy.forEach((v, k) => { const h = E('rect', {x:m.l+k*bw, y:m.t-10, width:bw, height:ph+10, class:'hit'});
-    const pick = () => { st.m4 = k; if (st.di === MEND[k]) upd4(); else setDay(MEND[k]); };
+    const pick = () => { st.m4 = k; upd4(); };
     h.addEventListener('pointerenter', pick); h.addEventListener('pointerdown', pick); svg.append(h); });
   g4 = {bars, peak, sel, m, bw, y, pw}; upd4();
 }
 function upd4(){
-  const i = st.di; if (MEND[st.m4] !== i) st.m4 = monthOf(i);
-  const k = st.m4, inf = D.inf[i];
-  $('#asof4').textContent = 'From purchase to ' + MONL[k%12] + ' ' + (2021 + Math.floor(k/12));
-  $('#t4a').textContent = pct((inf-1)*100); $('#t4b').textContent = usd(100/inf); $('#t4c').textContent = usd(.5625/inf, 3);
+  const k = st.m4;
   if (!g4) return;
   g4.bars.forEach((b, j) => b.classList.toggle('dim', j !== k));
   const near = Math.abs(k-17) < 5; g4.peak.setAttribute('visibility', near && k !== 17 ? 'hidden' : 'visible');
   if (k === 17) g4.sel.textContent = ''; else { g4.sel.textContent = D.yoy[k].toFixed(1) + '% · ' + MON[k%12] + ' ' + (2021 + Math.floor(k/12));
     g4.sel.setAttribute('x', clamp(g4.m.l + (k+.5)*g4.bw, g4.m.l + 44, g4.m.l + g4.pw - 44)); g4.sel.setAttribute('y', g4.y(Math.max(...D.yoy.slice(Math.max(0, k-5), k+6))) - 7); }
 }
-subs.push(upd4);
 $('#c4').addEventListener('keydown', e => { if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return; e.preventDefault(); e.stopPropagation();
-  st.m4 = clamp(st.m4 + (e.key === 'ArrowRight' ? 1 : -1), 0, 35); if (st.di === MEND[st.m4]) upd4(); else setDay(MEND[st.m4]); });
+  st.m4 = clamp(st.m4 + (e.key === 'ArrowRight' ? 1 : -1), 0, 35); upd4(); });
 
-/* ===== 5 price / yield ===== */
-const K5 = [['Issue, Feb 2021', 0], ['End 2021', 221], ['End 2022', 470], ['Low, Oct 2023', 671], ['End 2023', 720]];
+/* ===== 6 the case: the note year by year ===== */
+const K5 = [['Issue · 16 Feb 2021', 0, '1.7%', '0–0.25%'], ['End of 2021', 221, '7.0%', '0–0.25%'], ['End of 2022', 470, '6.5%', '4.25–4.50%'], ['Low · 19 Oct 2023', 671, '3.2%', '5.25–5.50%'], ['End of 2023', 720, '3.4%', '5.25–5.50%']];
+const EV6 = [[Date.UTC(2022,2,16), 'First Fed hike', 0], [Date.UTC(2022,5,15), 'Inflation peaks at 9.1%', 1], [Date.UTC(2023,9,19), '10-year yield 4.98%', 0]];
+const rows5 = K5.map(k => { const tr = H('tr'); tr.tabIndex = 0;
+  [k[0], k[2], k[3], D.y[k[1]].toFixed(2) + '%', D.p[k[1]].toFixed(2)].forEach((t, j) => tr.append(H(j ? 'td' : 'th', '', t)));
+  pressable(tr, () => setDay(k[1])); $('#tb5').append(tr); return tr; });
 let g5 = null;
 function draw5(){
   const c = $('#c5'), {svg, W, Ht} = frame(c); if (W < 60 || Ht < 60) return;
-  const m = {l:44, r:14, t:12, b:40}, pw = W-m.l-m.r, ph = Ht-m.t-m.b, Y0 = 60, Y1 = 115, x = v => m.l + pw*v/6, y = v => m.t + ph*(1-(v-Y0)/(Y1-Y0)), settle = dms(st.di);
-  svg.setAttribute('aria-label', 'Price of the bond for market yields from 0 to 6 percent');
-  for (let v = 60; v <= 110; v += 10) svg.append(E('line', {x1:m.l, x2:m.l+pw, y1:y(v), y2:y(v), class:'grid'}), E('text', {x:m.l-6, y:y(v)+4, 'text-anchor':'end', class:'tick'}, v));
-  for (let v = 0; v <= 6; v++) svg.append(E('line', {x1:x(v), x2:x(v), y1:m.t+ph, y2:m.t+ph+5, class:'axis'}), E('text', {x:x(v), y:m.t+ph+17, 'text-anchor':'middle', class:'tick'}, v + '%'));
-  svg.append(E('line', {x1:m.l, x2:m.l+pw, y1:m.t+ph, y2:m.t+ph, class:'axis'}), E('text', {x:m.l+pw/2, y:Ht-4, 'text-anchor':'middle', class:'lbl2'}, 'Market yield'));
-  svg.append(E('line', {x1:m.l, x2:m.l+pw, y1:y(100), y2:y(100), class:'dash'}), E('text', {x:m.l+pw-4, y:y(100)-6, 'text-anchor':'end', class:'lbl2'}, 'Face value 100'));
-  const pts = []; for (let v = 0; v <= 6.001; v += .05) pts.push([x(v), y(priceAt(settle, v))]);
-  svg.append(E('path', {d:pathOf(pts), class:'ln ln-blue'}));
-  const gx = E('line', {class:'dash'}), gy = E('line', {class:'dash'}); svg.append(gx, gy);
-  const ax = x(D.y[st.di]), ay = y(D.p[st.di]);
-  svg.append(E('circle', {cx:ax, cy:ay, r:6, class:'ring'}));
-  const left = ax > m.l + pw*.62;
-  svg.append(E('text', {x:ax + (left ? -12 : 12), y:ay + (left ? 24 : -12), 'text-anchor':left ? 'end' : 'start', class:'lbl'}, 'Actual, ' + fmtDate(settle)));
-  const dot = E('circle', {r:6.5, class:'dot d-blue'}); svg.append(dot);
+  const narrow = W < 560, m = {l:40, r:narrow ? 14 : 30, t:narrow ? 60 : 46, b:24}, pw = W-m.l-m.r, ph = Ht-m.t-m.b, t0 = D.t[0], t1 = D.t[N-1], Y0 = 70, Y1 = 105;
+  const x = t => m.l + pw*(t-t0)/(t1-t0), y = v => m.t + ph*(1-(v-Y0)/(Y1-Y0));
+  svg.setAttribute('aria-label', 'Price of the note per 100 dollars of face value, February 2021 to December 2023');
+  for (let v = 70; v <= 100; v += 10) svg.append(E('line', {x1:m.l, x2:m.l+pw, y1:y(v), y2:y(v), class:v === 100 ? 'dash' : 'grid'}), E('text', {x:m.l-6, y:y(v)+4, 'text-anchor':'end', class:'tick'}, v));
+  svg.append(E('line', {x1:m.l, x2:m.l+pw, y1:m.t+ph, y2:m.t+ph, class:'axis'}));
+  [[t0,365,'2021'],[365,730,'2022'],[730,t1,'2023']].forEach(([a, b, l], j) => { svg.append(E('text', {x:(x(a)+x(b))/2, y:Ht-6, 'text-anchor':'middle', class:'tick'}, l)); if (j) svg.append(E('line', {x1:x(a), x2:x(a), y1:m.t+ph, y2:m.t+ph+6, class:'axis'})); });
+  EV6.forEach(([ms, label, row], j) => { const X = x((ms-BASE)/DAY), top = narrow ? m.t-46+j*15 : m.t-22+row*14; svg.append(E('line', {x1:X, x2:X, y1:top+4, y2:m.t+ph, class:'dash'}));
+    const end = X > m.l + pw*.7; svg.append(E('text', {x:X + (end ? -5 : 5), y:top, 'text-anchor':end ? 'end' : 'start', class:'lbl2'}, label)); });
+  svg.append(E('path', {d:pathOf(D.t.map((t, i) => [x(t), y(D.p[i])])), class:'ln ln-blue'}));
+  K5.forEach(k => svg.append(E('circle', {cx:x(D.t[k[1]]), cy:y(D.p[k[1]]), r:4, class:'ring'})));
+  const cur = E('line', {y1:m.t, y2:m.t+ph, class:'cur'}), dot = E('circle', {r:5.5, class:'dot d-blue'}), lab = E('text', {class:'lbl'}); svg.append(cur, dot, lab);
   const hit = E('rect', {x:m.l, y:m.t, width:pw, height:ph, class:'hit'});
-  const drag = e => { st.y5 = clamp(Math.round((e.clientX - c.getBoundingClientRect().left - m.l)/pw*600)/100, 0, 6); upd5(); };
-  hit.addEventListener('pointerdown', e => { hit.setPointerCapture(e.pointerId); drag(e); });
-  hit.addEventListener('pointermove', e => { if (e.buttons) drag(e); });
+  const seek = e => { const t = t0 + (e.clientX - c.getBoundingClientRect().left - m.l)/pw*(t1-t0); let lo = 0, hi = N-1; while (lo < hi) { const mid = (lo+hi) >> 1; D.t[mid] < t ? lo = mid+1 : hi = mid; } setDay(lo); };
+  hit.addEventListener('pointermove', e => { if (e.pointerType !== 'touch' || e.buttons) seek(e); }); hit.addEventListener('pointerdown', seek);
   svg.append(hit);
-  g5 = {x, y, m, ph, dot, gx, gy}; upd5();
+  g5 = {x, y, m, pw, cur, dot, lab}; upd5();
 }
 function upd5(){
-  const settle = dms(st.di), yv = st.y5, p = priceAt(settle, yv);
-  $('#r5').value = yv; $('#o5').textContent = yv.toFixed(2) + '%';
-  $('#asof5').textContent = '· ' + ((MAT-settle)/DAY/365.25).toFixed(1) + ' years left';
-  $('#t5p').textContent = p.toFixed(2); $('#t5d').textContent = pct((p/AUCTION_PRICE-1)*100);
-  $('#t5s').textContent = pct((priceAt(settle, yv+1)/p-1)*100);
-  $$('#dates5 .chip').forEach((b, k) => b.setAttribute('aria-pressed', K5[k][1] === st.di));
+  const i = st.di;
+  rows5.forEach((tr, k) => { const on = K5[k][1] === i; tr.classList.toggle('sel', on); tr.setAttribute('aria-pressed', on); });
+  $('#asof5').textContent = fmtDate(dms(i)) + ' · price ' + D.p[i].toFixed(2) + ' · ' + pct((D.p[i]/AUCTION_PRICE-1)*100) + ' since issue';
   if (!g5) return;
-  const X = g5.x(yv), Y = g5.y(p);
-  g5.dot.setAttribute('cx', X); g5.dot.setAttribute('cy', Y);
-  for (const [k, v] of Object.entries({x1:X, x2:X, y1:Y, y2:g5.m.t+g5.ph})) g5.gx.setAttribute(k, v);
-  for (const [k, v] of Object.entries({x1:g5.m.l, x2:X, y1:Y, y2:Y})) g5.gy.setAttribute(k, v);
+  const X = g5.x(D.t[i]), Y = g5.y(D.p[i]), left = X > g5.m.l + g5.pw*.8;
+  g5.cur.setAttribute('x1', X); g5.cur.setAttribute('x2', X); g5.dot.setAttribute('cx', X); g5.dot.setAttribute('cy', Y);
+  g5.lab.textContent = D.p[i].toFixed(2); g5.lab.setAttribute('x', X + (left ? -10 : 10)); g5.lab.setAttribute('y', Y - 10); g5.lab.setAttribute('text-anchor', left ? 'end' : 'start');
 }
-K5.forEach(k => { const b = H('button', 'chip', k[0]); b.addEventListener('click', () => { if (st.di === k[1]) { st.y5 = D.y[k[1]]; upd5(); } else setDay(k[1]); }); $('#dates5').append(b); });
-$('#r5').addEventListener('input', e => { st.y5 = +e.target.value; upd5(); });
-subs.push(draw5);
+subs.push(upd5);
 
-/* ===== 6 timeline ===== */
-const EV6 = [[Date.UTC(2022,2,16), 'First Fed hike', 0], [Date.UTC(2022,5,15), 'Inflation peaks at 9.1%', 1], [Date.UTC(2023,9,19), '10-year yield 4.98%', 0]];
+/* ===== 7 the bondholder ===== */
 let g6 = null, raf6 = 0;
 function draw6(){
   const c = $('#c6'), {svg, W, Ht} = frame(c); if (W < 60 || Ht < 60) return;
@@ -969,73 +993,28 @@ $('#play6').addEventListener('click', play6);
 $('#r6').addEventListener('input', e => { stop6(); setDay(+e.target.value); });
 subs.push(upd6);
 
-/* ===== 7 plain vs indexed ===== */
-const T_BUY = ISSUE, T_MAT = Date.UTC(2031,0,15), T_PRICE = 111.2453, T_IR0 = 1.00017, T_CPN = .0625;
-const TFLOWS = []; for (let y = 2021; y <= 2031; y++) for (const mo of [0, 6]) { const d = Date.UTC(y, mo, 15); if (d > T_BUY && d <= T_MAT) TFLOWS.push((d-T_BUY)/DAY/365.25); }
-function tipsReal(pi){                                            /* real annual return to maturity, with the par floor */
-  const T = TFLOWS[TFLOWS.length-1], G = Math.pow(1+pi, T), princ = 100*Math.max(T_IR0*G, 1)/G;
-  const f = r => TFLOWS.reduce((s, t) => s + T_CPN*T_IR0/Math.pow(1+r, t), 0) + princ/Math.pow(1+r, T) - T_PRICE;
-  let lo = -.2, hi = .2; for (let k = 0; k < 60; k++) { const mid = (lo+hi)/2; f(mid) > 0 ? lo = mid : hi = mid; } return (lo+hi)/2*100;
-}
-const plainReal = pi => (Math.pow(1+.01155/2, 2)/(1+pi)-1)*100;
-const BE7 = (Math.pow(1+.01155/2, 2)/(1+tipsReal(.03)/100)-1)*100;
-const P7 = [['Deflation −1%', -1], ['Target 2%', 2], ['Break-even ' + BE7.toFixed(1) + '%', +BE7.toFixed(1)], ['2021–23 pace 5.5%', 5.5]];
-let g7 = null;
-function draw7(){
-  const c = $('#c7'), {svg, W, Ht} = frame(c); if (W < 60 || Ht < 60) return;
-  const narrow = W < 520, m = {l:44, r:narrow ? 14 : 96, t:14, b:40}, pw = W-m.l-m.r, ph = Ht-m.t-m.b, Y0 = -7, Y1 = 4, x = v => m.l + pw*(v+2)/10, y = v => m.t + ph*(1-(v-Y0)/(Y1-Y0));
-  svg.setAttribute('aria-label', 'Real return per year to maturity of the plain note and of TIPS for average inflation between minus 2 and 8 percent');
-  for (let v = -6; v <= 4; v += 2) svg.append(E('line', {x1:m.l, x2:m.l+pw, y1:y(v), y2:y(v), class:v ? 'grid' : 'axis'}), E('text', {x:m.l-6, y:y(v)+4, 'text-anchor':'end', class:'tick'}, (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v) + '%'));
-  for (let v = -2; v <= 8; v += 2) svg.append(E('line', {x1:x(v), x2:x(v), y1:m.t+ph, y2:m.t+ph+5, class:'axis'}), E('text', {x:x(v), y:m.t+ph+17, 'text-anchor':'middle', class:'tick'}, (v < 0 ? '−' : '') + Math.abs(v) + '%'));
-  svg.append(E('text', {x:m.l+pw/2, y:Ht-4, 'text-anchor':'middle', class:'lbl2'}, 'Average inflation until 2031'));
-  const a = [], b = []; for (let v = -2; v <= 8.001; v += .1) { a.push([x(v), y(plainReal(v/100))]); b.push([x(v), y(tipsReal(v/100))]); }
-  svg.append(E('path', {d:pathOf(b), class:'ln ln-green'}), E('path', {d:pathOf(a), class:'ln ln-blue'}));
-  const bx = x(BE7), by = y(plainReal(BE7/100));
-  svg.append(E('circle', {cx:bx, cy:by, r:4, class:'ring'}), E('text', {x:bx+10, y:by-10, class:'lbl2'}, 'Break-even ' + BE7.toFixed(1) + '%'));
-  if (narrow) svg.append(E('text', {x:m.l+pw-4, y:y(plainReal(.08))-9, 'text-anchor':'end', class:'lbl'}, 'Plain note'), E('text', {x:m.l+pw-4, y:y(tipsReal(.08))-9, 'text-anchor':'end', class:'lbl'}, 'TIPS'));
-  else svg.append(E('text', {x:m.l+pw+9, y:y(plainReal(.08))+4, class:'lbl'}, 'Plain note'), E('text', {x:m.l+pw+9, y:y(tipsReal(.08))+4, class:'lbl'}, 'TIPS'));
-  const cur = E('line', {y1:m.t, y2:m.t+ph, class:'cur'}), d1 = E('circle', {r:5.5, class:'dot d-blue'}), d2 = E('circle', {r:5.5, class:'dot d-green'}); svg.append(cur, d1, d2);
-  const hit = E('rect', {x:m.l, y:m.t, width:pw, height:ph, class:'hit'});
-  const drag = e => { st.pi7 = clamp(Math.round(((e.clientX - c.getBoundingClientRect().left - m.l)/pw*10-2)*10)/10, -2, 8); upd7(); };
-  hit.addEventListener('pointerdown', e => { hit.setPointerCapture(e.pointerId); drag(e); }); hit.addEventListener('pointermove', e => { if (e.buttons) drag(e); });
-  svg.append(hit);
-  g7 = {x, y, cur, d1, d2}; upd7();
-}
-function upd7(){
-  const pi = st.pi7, a = plainReal(pi/100), b = tipsReal(pi/100), gap = a-b;
-  $('#r7').value = pi; $('#o7').textContent = pct(pi);
-  const s = $('#sum7'); s.textContent = '';
-  s.append('Plain note ', H('b', '', pct(a, 2)), ' a year, TIPS ', H('b', '', pct(b, 2)), ' a year. ',
-    Math.abs(gap) < .05 ? 'Level.' : (gap > 0 ? 'The plain note is ahead by ' : 'TIPS are ahead by ') + Math.abs(gap).toFixed(1) + ' points a year.');
-  $$('#presets7 .chip').forEach((el, k) => el.setAttribute('aria-pressed', P7[k][1] === pi));
-  if (!g7) return;
-  const X = g7.x(pi); g7.cur.setAttribute('x1', X); g7.cur.setAttribute('x2', X);
-  g7.d1.setAttribute('cx', X); g7.d1.setAttribute('cy', g7.y(a)); g7.d2.setAttribute('cx', X); g7.d2.setAttribute('cy', g7.y(b));
-}
-P7.forEach(p => { const b = H('button', 'chip', p[0]); b.addEventListener('click', () => { st.pi7 = p[1]; upd7(); }); $('#presets7').append(b); });
-$('#r7').addEventListener('input', e => { st.pi7 = +e.target.value; upd7(); });
+/* ===== 9 conclusion ===== */
 
-/* ===== 8 verdict ===== */
 const qcards = $$('.qcard');
 qcards.forEach(q => pressable(q, () => { const f = q.classList.toggle('is-flipped'); q.setAttribute('aria-pressed', f); }));
 
 /* ===== navigation ===== */
 const slides = $$('.slide'), segs = $('#segs'), segBtns = [];
 SPEAKERS.forEach((s, k) => { const g = H('div', 'grp'), row = H('div', 'grp-s'), l = H('span', 'grp-l', s.name + ' · ' + s.topic); g.append(l, row); spkEls[k].l = l;
-  for (const n of [k*2, k*2+1]) { const b = H('button', 'seg'); b.setAttribute('aria-label', 'Go to slide ' + (n+1)); b.addEventListener('click', () => go(n)); row.append(b); segBtns.push(b); }
+  for (const n of (k ? [k*2+1, k*2+2] : [0, 1, 2])) { const b = H('button', 'seg'); b.setAttribute('aria-label', 'Go to slide ' + (n+1)); b.addEventListener('click', () => go(n)); row.append(b); segBtns.push(b); }
   segs.append(g); });
 function go(n, silent){
-  n = clamp(n, 0, slides.length-1); st.slide = n; if (n !== 5) stop6(); document.body.dataset.sec = (n >> 1) + 1; bgDraw();
+  n = clamp(n, 0, slides.length-1); st.slide = n; if (n !== 6) stop6(); document.body.dataset.sec = secOf(n) + 1; bgDraw();
   slides.forEach((s, k) => { s.classList.toggle('on', k === n); s.classList.toggle('past', k < n); s.inert = k !== n; });
-  const sp = SPEAKERS[n >> 1];
-  $('#plateNo').textContent = String(n+1).padStart(2, '0') + ' / 08';
+  const sp = SPEAKERS[secOf(n)];
+  $('#plateNo').textContent = String(n+1).padStart(2, '0') + ' / 09';
   const who = $('#who'); who.textContent = sp.name; who.append(H('span', 'topic', ' · ' + sp.topic));
   segBtns.forEach((b, k) => { b.setAttribute('aria-current', k === n); b.classList.toggle('done', k < n); });
-  [...segs.children].forEach((g, k) => g.classList.toggle('cur', k === n >> 1));
+  [...segs.children].forEach((g, k) => g.classList.toggle('cur', k === secOf(n)));
   $('#prev').disabled = n === 0; $('#next').disabled = n === slides.length-1;
-  $('#notesWho').textContent = sp.name + ' says · slide ' + (n+1);
+  $('#notesWho').textContent = sp.name + ' · slide ' + (n+1);
   const nl = $('#notesList'); nl.textContent = ''; NOTES[n].forEach(t => { const li = H('li', '', noteText(t)); if (editing) makeEditable(li); nl.append(li); });
-  if (editing) $('#edFlip').hidden = !(n === 0 || n === 7);
+  if (editing) $('#edFlip').hidden = !(n === 5 || n === 8);
   if (!silent) { try { history.replaceState(null, '', '#slide-' + (n+1)); } catch (e) {} }
 }
 $('#prev').addEventListener('click', () => go(st.slide-1));
@@ -1055,16 +1034,16 @@ document.addEventListener('keydown', e => {
   else if (k === 'Home') go(0); else if (k === 'End') go(slides.length-1);
   else if (k === 'n' || k === 'N') toggleNotes();
   else if (k === 'f' || k === 'F') fullscreen();
-  else if ((k === 'p' || k === 'P') && st.slide === 5) play6();
-  else if ((k === 'r' || k === 'R') && st.slide === 7) qcards.forEach(q => { q.classList.add('is-flipped'); q.setAttribute('aria-pressed', true); });
-  else if (/^[1-8]$/.test(k) && !range) go(+k-1);
+  else if ((k === 'p' || k === 'P') && st.slide === 6) play6();
+  else if ((k === 'r' || k === 'R') && st.slide === 8) qcards.forEach(q => { q.classList.add('is-flipped'); q.setAttribute('aria-pressed', true); });
+  else if (/^[1-9]$/.test(k) && !range) go(+k-1);
 });
 /* a slider keeps focus after a drag and would swallow the arrow keys: release it */
 $$('input[type=range]').forEach(r => r.addEventListener('pointerup', () => r.blur()));
 let sw = null; const deck = $('#deck');
 deck.addEventListener('touchstart', e => { sw = e.target.closest('[data-noswipe],input,button') ? null : {x:e.touches[0].clientX, y:e.touches[0].clientY}; }, {passive:true});
 deck.addEventListener('touchend', e => { if (!sw) return; const dx = e.changedTouches[0].clientX - sw.x, dy = e.changedTouches[0].clientY - sw.y; if (Math.abs(dx) > 60 && Math.abs(dx) > 2*Math.abs(dy)) go(st.slide + (dx < 0 ? 1 : -1)); sw = null; }, {passive:true});
-const fromHash = () => { const mt = /^#slide-([1-8])$/.exec(location.hash); return mt ? +mt[1]-1 : null; };
+const fromHash = () => { const mt = /^#slide-([1-9])$/.exec(location.hash); return mt ? +mt[1]-1 : null; };
 window.addEventListener('hashchange', () => { const n = fromHash(); if (n != null && n !== st.slide) go(n, true); });
 
 /* ===== edit mode =====
@@ -1108,19 +1087,19 @@ function initEdit(){
   const D0 = JSON.parse(SPK0), ins = [], hue = ['--blue', '--orange', '--violet', '--green'];
   SPEAKERS.forEach((s, k) => { const r = H('div', 'ed-row'), dot = H('i'), nm = H('input'), tp = H('input');
     dot.style.background = 'var(' + hue[k] + ')'; nm.type = tp.type = 'text'; nm.value = s.name; tp.value = s.topic; nm.maxLength = 40; tp.maxLength = 60;
-    nm.setAttribute('aria-label', 'Nome dello speaker ' + (k+1)); tp.setAttribute('aria-label', 'Titolo della parte ' + (k+1));
+    nm.setAttribute('aria-label', 'Etichetta della parte ' + (k+1)); tp.setAttribute('aria-label', 'Titolo della parte ' + (k+1));
     const upd = () => { s.name = nm.value.trim() || D0[k].name; s.topic = tp.value.trim() || D0[k].topic;
       ED.speakers = JSON.stringify(SPEAKERS) === SPK0 ? null : SPEAKERS.map(x => ({name:x.name, topic:x.topic}));
       renderSpeakers(); go(st.slide, true); persist(); };
     nm.addEventListener('input', upd); tp.addEventListener('input', upd); r.append(dot, nm, tp); $('#edSpkRows').append(r); ins.push(nm); });
   openSpk = k => { spkPop.hidden = false; const i = ins[k || 0]; i.focus(); i.select(); };
-  $('#edSpkBtn').addEventListener('click', () => openSpk(st.slide >> 1));
+  $('#edSpkBtn').addEventListener('click', () => openSpk(secOf(st.slide)));
   $('#edSpkOk').addEventListener('click', () => { spkPop.hidden = true; });
   spkPop.addEventListener('click', e => { if (e.target === spkPop) spkPop.hidden = true; });
   pubPop.addEventListener('click', e => { if (e.target === pubPop) pubPop.hidden = true; });
   $('#edPubClose').addEventListener('click', () => { pubPop.hidden = true; });
 
-  $('#edFlip').addEventListener('click', () => { if (st.slide === 0) cert.click(); else qcards.forEach(q => q.click()); });
+  $('#edFlip').addEventListener('click', () => { if (st.slide === 5) cert.click(); else qcards.forEach(q => q.click()); });
   $('#edExit').addEventListener('click', e => { e.preventDefault(); location.href = location.pathname + location.hash; });
   let armed = 0;
   undoB.addEventListener('click', () => {
@@ -1148,9 +1127,9 @@ function initEdit(){
 }
 
 /* ===== boot ===== */
-function drawAll(){ guilloche(); bgDraw(); draw4(); draw5(); draw6(); draw7(); }
+function drawAll(){ guilloche(); bgDraw(); draw4(); draw5(); draw6(); }
 function start(saved){
-  if (saved && Number.isInteger(saved.di)) st.di = clamp(saved.di, 0, N-1), st.y5 = D.y[st.di];
+  if (saved && Number.isInteger(saved.di)) st.di = clamp(saved.di, 0, N-1);
   renderSpeakers(); if (editing) initEdit();
   const h = fromHash(); go(h != null ? h : (saved && Number.isInteger(saved.slide) ? saved.slide : 0), true);
   upd3(); subs.forEach(f => f()); drawAll();
